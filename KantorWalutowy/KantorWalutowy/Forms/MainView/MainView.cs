@@ -25,17 +25,33 @@ namespace KantorWalutowy.Forms.MainView
         }
 
         private void Download_BTN_Click(object sender, EventArgs e)
-        {            
+        {
             var status = _download.GetData();
 
-            if(status)
+            if (status)
             {
                 MessageBox.Show("Pobrano dane.");
+                AddToGridView();
             }
             else
             {
                 MessageBox.Show($"Nie pobrano danych, być może dane na dzień dzisiejszy {DateTime.Now.Date} zostały już pobrane.");
             }
+        }
+
+        private void AddToGridView()
+        {
+            using (var dbContext = new CurrencyDbContext())
+            {
+                var query = dbContext.Currencies.ToList();
+
+                Currency_DGW.DataSource = query;
+            }
+        }
+
+        private void Refresh_BTN_Click(object sender, EventArgs e)
+        {
+            AddToGridView();
         }
     }
 }
