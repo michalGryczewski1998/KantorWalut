@@ -28,9 +28,13 @@ namespace KantorWalutowy.Forms.MainView
         {            
             var status = _download.GetData();
 
-            if(status != null)
+            if(status)
             {
                 MessageBox.Show("Pobrano dane.");
+            }
+            else
+            {
+                MessageBox.Show($"Nie pobrano danych, być może dane na dzień dzisiejszy {DateTime.Now.Date} zostały już pobrane.");
             }
         }
     }

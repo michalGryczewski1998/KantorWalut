@@ -41,6 +41,12 @@ namespace KantorWalutowy.Download
                             if (reader.Name == "Cube" && reader.GetAttribute("time") != null)
                             {
                                 date = Convert.ToDateTime(reader.GetAttribute("time"));
+                                bool chech = CheckDataInDatabase(date);
+
+                                if (chech)
+                                {
+                                    break;
+                                }
                             }
                             if (reader.GetAttribute("rate") != null && reader.GetAttribute("currency") != null)
                             {
@@ -62,6 +68,21 @@ namespace KantorWalutowy.Download
                 }
             }
             return false;
+        }
+
+        private bool CheckDataInDatabase(DateTime date)
+        {
+            using (var dbContext = new CurrencyDbContext())
+            {
+                var query = dbContext.Currencies.FirstOrDefault(d => d.Time == date);
+
+                if (query is not null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         private void AddToDatabase(List<CurrencyDto> dtos)
