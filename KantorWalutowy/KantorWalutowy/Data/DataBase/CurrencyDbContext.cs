@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace KantorWalutowy.Data.DataBase
 {
@@ -32,6 +33,11 @@ namespace KantorWalutowy.Data.DataBase
             modelBuilder.Entity<Currency>()
                 .Property(e => e.Time)
                 .IsRequired();
+        }
+
+        public static implicit operator ValidationType(CurrencyDbContext v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

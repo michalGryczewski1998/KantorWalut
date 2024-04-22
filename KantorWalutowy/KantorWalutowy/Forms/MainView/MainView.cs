@@ -1,4 +1,5 @@
-﻿using KantorWalutowy.Data.DataBase;
+﻿using AutoMapper;
+using KantorWalutowy.Data.DataBase;
 using KantorWalutowy.Data.Interfaces;
 using KantorWalutowy.Download;
 using System;
@@ -15,12 +16,12 @@ namespace KantorWalutowy.Forms.MainView
 {
     public partial class MainView : Form
     {
-        private IDownload _download;
+        private readonly IDownload _download;
 
-        public MainView()
+        public MainView(IMapper mapper)
         {
             InitializeComponent();
-            _download = new DownloadServices();
+            _download = new DownloadServices(mapper);
         }
 
         private void Download_BTN_Click(object sender, EventArgs e)
