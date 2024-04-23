@@ -75,14 +75,9 @@ namespace KantorWalutowy.Forms.MainView
             }
         }
 
-        private void Calculates(string? currencyName, string? currencyRate, string? currencyTime, TypeOfCalculate typeOfCalculate)
-        {
-            CurrencyCalculates currencyCalculates = new CurrencyCalculates(currencyName, currencyRate, currencyTime, typeOfCalculate);
-        }
-
         private void Calculate_BTN_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Currency_TB.Text) || string.IsNullOrEmpty(Rate_TB.Text) || string.IsNullOrEmpty(Time_TB.Text) || Calculate_CLB.CheckedItems == null)
+            if (string.IsNullOrEmpty(Currency_TB.Text) || string.IsNullOrEmpty(Rate_TB.Text) || string.IsNullOrEmpty(Time_TB.Text) || Calculate_CLB.CheckedItems.Count == 0)
             {
                 MessageBox.Show("Nie wybrano waluty podstawowej z formatki lub brak typu obliczenia !");
             }
@@ -92,16 +87,22 @@ namespace KantorWalutowy.Forms.MainView
                 var rate = Rate_TB.Text;
                 var time = Time_TB.Text;
 
+                CurrencyCalculates currencyCalculates = new CurrencyCalculates();
+
                 if (Calculate_CLB.SelectedItem.ToString() == "Kurs PLN do USD")
                 {
-                    Calculates(name, rate, time, TypeOfCalculate.PLNUSD);
+                    var finalResoult = currencyCalculates.PlnToUsd(name, rate, time, TypeOfCalculate.PLNUSD);
+
+                    if(finalResoult != double.MinValue)
+                    {
+                        Resoult_TB.Text = finalResoult.ToString();
+                    }
+                    else
+                    {
+                        Resoult_TB.Text = "Błąd podczas obliczeń";
+                    }
                 }              
             }
-        }
-
-        public void CalculateResoult(double resoult)
-        {            
-            Resoult_TB.Text = resoult.ToString();
         }
     }
 }

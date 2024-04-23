@@ -6,53 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace KantorWalutowy.Calculate
 {
     public class CurrencyCalculates
     {
-        private readonly string? _currencyName;
-        private readonly string? _currencyRate;
-        private readonly string? _currencyTime;
-        private readonly TypeOfCalculate _typeOfCalculate;
-
-        public CurrencyCalculates(string? currencyName, string? currencyRate, string? currencyTime, Enums.TypeOfCalculate typeOfCalculate)
+        public double PlnToUsd(string name, string rate, string date, TypeOfCalculate typeOfCalculate)
         {
-            _currencyName = currencyName;
-            _currencyRate = currencyRate;
-            _currencyTime = currencyTime;
-            _typeOfCalculate = typeOfCalculate;
-
-            StartUp();
-        }
-
-        private void StartUp()
-        {
-            if(_typeOfCalculate == TypeOfCalculate.PLNUSD) 
-            {
-                PlnToUsd();
-            }
-        }
-
-        private void PlnToUsd()
-        {
-            double usdToEuro = Convert.ToDouble(_currencyRate);
+            double usdToEuro = Convert.ToDouble(rate);
             double plnToEuro = double.MinValue;
             double resoult = double.MinValue;
 
             using (var dbContext = new CurrencyDbContext())
             {
-                var query = dbContext.Currencies.FirstOrDefault(m => m.CurrencyName == "PLN");
+                var query = dbContext.Currencies.FirstOrDefault(x => x.CurrencyName == "PLN" && x.Time == Convert.ToDateTime(date));
                 plnToEuro = query.Rate;
             }
 
             if (plnToEuro != double.MinValue && usdToEuro != double.MinValue)
             {
-                resoult = plnToEuro * usdToEuro;
+                resoult = usdToEuro / plnToEuro;               
             }
 
-            MainView mainView = new MainView();
-            mainView.CalculateResoult(resoult);
+            if (resoult > 0 && resoult != null)
+                return Math.Ceiling(resoult * 100) / 100;
+            else return double.MinValue;
         }
     }
 }
