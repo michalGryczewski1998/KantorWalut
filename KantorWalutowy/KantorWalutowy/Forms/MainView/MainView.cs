@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using KantorWalutowy.Calculate;
 using KantorWalutowy.Data.DataBase;
+using KantorWalutowy.Data.DataBase.Entities;
 using KantorWalutowy.Data.Interfaces;
 using KantorWalutowy.Download;
-using KantorWalutowy.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,6 +59,28 @@ namespace KantorWalutowy.Forms.MainView
         private void Refresh_BTN_Click(object sender, EventArgs e)
         {
             AddToGridView();
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
+            using (var dbContext = new CurrencyDbContext())
+            {
+                var query = dbContext.Currencies
+                    .Select(z => z.CurrencyName)
+                    .Distinct();
+
+                if (query != null)
+                {
+                    fromListBox_LB.Items.AddRange(query.ToArray());
+                    toListBox_LB.Items.AddRange(query.ToArray());
+                }
+                else
+                {
+                    MessageBox.Show("Brak walut do wyświetlenia.");
+                }
+
+            }
         }
 
         private void Currency_DGW_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -77,7 +99,7 @@ namespace KantorWalutowy.Forms.MainView
 
         private void Calculate_BTN_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Currency_TB.Text) || string.IsNullOrEmpty(Rate_TB.Text) || string.IsNullOrEmpty(Time_TB.Text) || Calculate_CLB.CheckedItems.Count == 0)
+            if (string.IsNullOrEmpty(Currency_TB.Text) || string.IsNullOrEmpty(Rate_TB.Text) || string.IsNullOrEmpty(Time_TB.Text) || fromListBox_LB.SelectedItem == null)
             {
                 MessageBox.Show("Nie wybrano waluty podstawowej z formatki lub brak typu obliczenia !");
             }
@@ -87,21 +109,21 @@ namespace KantorWalutowy.Forms.MainView
                 var rate = Rate_TB.Text;
                 var time = Time_TB.Text;
 
+                var from = fromListBox_LB.SelectedItem;
+                var to = toListBox_LB.SelectedItem;
+
                 CurrencyCalculates currencyCalculates = new CurrencyCalculates();
 
-                if (Calculate_CLB.SelectedItem.ToString() == "Kurs PLN do USD")
-                {
-                    var finalResoult = currencyCalculates.PlnToUsd(name, rate, time, TypeOfCalculate.PLNUSD);
+                var finalResoult = currencyCalculates.Calculate(name, rate, time);
 
-                    if(finalResoult != double.MinValue)
-                    {
-                        Resoult_TB.Text = finalResoult.ToString();
-                    }
-                    else
-                    {
-                        Resoult_TB.Text = "Błąd podczas obliczeń";
-                    }
-                }              
+                if (finalResoult != double.MinValue)
+                {
+                    Resoult_TB.Text = finalResoult.ToString();
+                }
+                else
+                {
+                    Resoult_TB.Text = "Błąd podczas obliczeń";
+                }
             }
         }
     }

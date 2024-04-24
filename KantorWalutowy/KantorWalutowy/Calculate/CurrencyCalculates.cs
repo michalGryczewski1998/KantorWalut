@@ -1,5 +1,4 @@
 ﻿using KantorWalutowy.Data.DataBase;
-using KantorWalutowy.Enums;
 using KantorWalutowy.Forms.MainView;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace KantorWalutowy.Calculate
 {
     public class CurrencyCalculates
     {
-        public double PlnToUsd(string name, string rate, string date, TypeOfCalculate typeOfCalculate)
+        public double Calculate(string name, string rate, string date)
         {
             double usdToEuro = Convert.ToDouble(rate);
             double plnToEuro = double.MinValue;
