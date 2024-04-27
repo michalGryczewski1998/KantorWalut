@@ -106,24 +106,31 @@ namespace KantorWalutowy.Forms.MainView
             }
             else
             {
-                var currencyFrom = fromListBox_LB.SelectedItem.ToString();
-                var currencyTo = toListBox_LB.SelectedItem.ToString();
-                var time = data_DTP.Text;
-
-                CurrencyFrom_TB.Text = currencyFrom;
-                CurrencyTo_TB.Text = currencyTo;
-
-                CurrencyCalculates currencyCalculates = new CurrencyCalculates();
-
-                var finalResoult = currencyCalculates.Calculate(currencyFrom, currencyTo, time);
-
-                if (finalResoult != double.MinValue)
+                try
                 {
-                    Resoult_TB.Text = finalResoult.ToString();
+                    var currencyFrom = fromListBox_LB.SelectedItem.ToString();
+                    var currencyTo = toListBox_LB.SelectedItem.ToString();
+                    var time = data_DTP.Text;
+
+                    CurrencyFrom_TB.Text = currencyFrom;
+                    CurrencyTo_TB.Text = currencyTo;
+
+                    CurrencyCalculates currencyCalculates = new CurrencyCalculates();
+
+                    var finalResoult = currencyCalculates.Calculate(currencyFrom, currencyTo, time);
+
+                    if (finalResoult != double.MinValue)
+                    {
+                        Resoult_TB.Text = finalResoult.ToString();
+                    }
+                    else
+                    {
+                        Resoult_TB.Text = "Błąd podczas obliczeń";
+                    }
                 }
-                else
+                catch(Exception ex)
                 {
-                    Resoult_TB.Text = "Błąd podczas obliczeń";
+                    MessageBox.Show($"Napotkano błąd podczas obliczania {ex.Message}");
                 }
             }
         }
