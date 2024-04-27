@@ -33,17 +33,17 @@
             Przybornik_GB = new GroupBox();
             Refresh_BTN = new Button();
             Calculate_GB = new GroupBox();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            toListBox_LB = new ListBox();
             fromListBox_LB = new ListBox();
             label1 = new Label();
             Resoult_TB = new TextBox();
-            Time_TB = new TextBox();
-            Rate_TB = new TextBox();
-            Currency_TB = new TextBox();
+            CurrencyTo_TB = new TextBox();
+            CurrencyFrom_TB = new TextBox();
             Calculate_BTN = new Button();
-            toListBox_LB = new ListBox();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
+            data_DTP = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)Currency_DGW).BeginInit();
             Przybornik_GB.SuspendLayout();
             Calculate_GB.SuspendLayout();
@@ -91,6 +91,7 @@
             // 
             // Calculate_GB
             // 
+            Calculate_GB.Controls.Add(data_DTP);
             Calculate_GB.Controls.Add(label4);
             Calculate_GB.Controls.Add(label3);
             Calculate_GB.Controls.Add(label2);
@@ -98,9 +99,8 @@
             Calculate_GB.Controls.Add(fromListBox_LB);
             Calculate_GB.Controls.Add(label1);
             Calculate_GB.Controls.Add(Resoult_TB);
-            Calculate_GB.Controls.Add(Time_TB);
-            Calculate_GB.Controls.Add(Rate_TB);
-            Calculate_GB.Controls.Add(Currency_TB);
+            Calculate_GB.Controls.Add(CurrencyTo_TB);
+            Calculate_GB.Controls.Add(CurrencyFrom_TB);
             Calculate_GB.Controls.Add(Calculate_BTN);
             Calculate_GB.Location = new Point(535, 69);
             Calculate_GB.Name = "Calculate_GB";
@@ -108,6 +108,42 @@
             Calculate_GB.TabIndex = 3;
             Calculate_GB.TabStop = false;
             Calculate_GB.Text = "Obliczenia";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 162);
+            label4.Name = "label4";
+            label4.Size = new Size(34, 15);
+            label4.TabIndex = 12;
+            label4.Text = "Data:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(6, 133);
+            label3.Name = "label3";
+            label3.Size = new Size(99, 15);
+            label3.TabIndex = 11;
+            label3.Text = "WalutaDocelowa:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(6, 104);
+            label2.Name = "label2";
+            label2.Size = new Size(103, 15);
+            label2.TabIndex = 10;
+            label2.Text = "Waluta pierwotna:";
+            // 
+            // toListBox_LB
+            // 
+            toListBox_LB.FormattingEnabled = true;
+            toListBox_LB.ItemHeight = 15;
+            toListBox_LB.Location = new Point(127, 19);
+            toListBox_LB.Name = "toListBox_LB";
+            toListBox_LB.Size = new Size(120, 79);
+            toListBox_LB.TabIndex = 9;
             // 
             // fromListBox_LB
             // 
@@ -134,26 +170,19 @@
             Resoult_TB.Size = new Size(191, 23);
             Resoult_TB.TabIndex = 6;
             // 
-            // Time_TB
+            // CurrencyTo_TB
             // 
-            Time_TB.Location = new Point(127, 162);
-            Time_TB.Name = "Time_TB";
-            Time_TB.Size = new Size(119, 23);
-            Time_TB.TabIndex = 5;
+            CurrencyTo_TB.Location = new Point(127, 133);
+            CurrencyTo_TB.Name = "CurrencyTo_TB";
+            CurrencyTo_TB.Size = new Size(119, 23);
+            CurrencyTo_TB.TabIndex = 4;
             // 
-            // Rate_TB
+            // CurrencyFrom_TB
             // 
-            Rate_TB.Location = new Point(127, 133);
-            Rate_TB.Name = "Rate_TB";
-            Rate_TB.Size = new Size(119, 23);
-            Rate_TB.TabIndex = 4;
-            // 
-            // Currency_TB
-            // 
-            Currency_TB.Location = new Point(127, 104);
-            Currency_TB.Name = "Currency_TB";
-            Currency_TB.Size = new Size(119, 23);
-            Currency_TB.TabIndex = 3;
+            CurrencyFrom_TB.Location = new Point(127, 104);
+            CurrencyFrom_TB.Name = "CurrencyFrom_TB";
+            CurrencyFrom_TB.Size = new Size(119, 23);
+            CurrencyFrom_TB.TabIndex = 3;
             // 
             // Calculate_BTN
             // 
@@ -165,41 +194,13 @@
             Calculate_BTN.UseVisualStyleBackColor = true;
             Calculate_BTN.Click += Calculate_BTN_Click;
             // 
-            // toListBox_LB
+            // data_DTP
             // 
-            toListBox_LB.FormattingEnabled = true;
-            toListBox_LB.ItemHeight = 15;
-            toListBox_LB.Location = new Point(127, 19);
-            toListBox_LB.Name = "toListBox_LB";
-            toListBox_LB.Size = new Size(120, 79);
-            toListBox_LB.TabIndex = 9;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(72, 112);
-            label2.Name = "label2";
-            label2.Size = new Size(47, 15);
-            label2.TabIndex = 10;
-            label2.Text = "Waluta:";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(72, 141);
-            label3.Name = "label3";
-            label3.Size = new Size(53, 15);
-            label3.TabIndex = 11;
-            label3.Text = "Wartość:";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(72, 170);
-            label4.Name = "label4";
-            label4.Size = new Size(34, 15);
-            label4.TabIndex = 12;
-            label4.Text = "Data:";
+            data_DTP.Format = DateTimePickerFormat.Short;
+            data_DTP.Location = new Point(55, 162);
+            data_DTP.Name = "data_DTP";
+            data_DTP.Size = new Size(192, 23);
+            data_DTP.TabIndex = 13;
             // 
             // MainView
             // 
@@ -228,13 +229,13 @@
         private Button Calculate_BTN;
         private Label label1;
         private TextBox Resoult_TB;
-        private TextBox Time_TB;
-        private TextBox Rate_TB;
-        private TextBox Currency_TB;
+        private TextBox CurrencyTo_TB;
+        private TextBox CurrencyFrom_TB;
         private ListBox fromListBox_LB;
         private ListBox toListBox_LB;
         private Label label4;
         private Label label3;
         private Label label2;
+        private DateTimePicker data_DTP;
     }
 }

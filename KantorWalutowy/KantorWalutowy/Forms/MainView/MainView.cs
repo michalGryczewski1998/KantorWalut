@@ -70,51 +70,52 @@ namespace KantorWalutowy.Forms.MainView
                     .Select(z => z.CurrencyName)
                     .Distinct();
 
-                if (query != null)
+                //ToDo
+                //Czemu w zapytaniu niezadziałał Distinct() ?!?
+                if (query != null && (fromListBox_LB.Items.Count == 0 && toListBox_LB.Items.Count == 0))
                 {
                     fromListBox_LB.Items.AddRange(query.ToArray());
                     toListBox_LB.Items.AddRange(query.ToArray());
+
+                    fromListBox_LB.Items.Add("EUR");
+                    toListBox_LB.Items.Add("EUR");
                 }
                 else
                 {
-                    MessageBox.Show("Brak walut do wyświetlenia.");
+                    if (fromListBox_LB.Items.Count > 0 && toListBox_LB.Items.Count > 0)
+                    {
+                        MessageBox.Show("Dane już pobrane");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Brak walut do wyświetlenia.");
+                    }
                 }
 
             }
         }
 
-        private void Currency_DGW_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            Currency_DGW.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        private void Currency_DGW_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
-            if (Currency_DGW.SelectedRows.Count > 0)
-            {
-                DataGridViewRow row = Currency_DGW.SelectedRows[0];
-
-                Currency_TB.Text = row.Cells["CurrencyName"].Value.ToString();
-                Rate_TB.Text = row.Cells["Rate"].Value.ToString();
-                Time_TB.Text = row.Cells["Time"].Value.ToString();                
-            }
-        }
 
         private void Calculate_BTN_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Currency_TB.Text) || string.IsNullOrEmpty(Rate_TB.Text) || string.IsNullOrEmpty(Time_TB.Text) || fromListBox_LB.SelectedItem == null)
+            if (string.IsNullOrEmpty(fromListBox_LB.SelectedItem.ToString()) || string.IsNullOrEmpty(toListBox_LB.SelectedItem.ToString()) || string.IsNullOrEmpty(data_DTP.Text))
             {
                 MessageBox.Show("Nie wybrano waluty podstawowej z formatki lub brak typu obliczenia !");
             }
             else
             {
-                var name = Currency_TB.Text;
-                var rate = Rate_TB.Text;
-                var time = Time_TB.Text;
+                var currencyFrom = fromListBox_LB.SelectedItem.ToString();
+                var currencyTo = toListBox_LB.SelectedItem.ToString();
+                var time = data_DTP.Text;
 
-                var from = fromListBox_LB.SelectedItem;
-                var to = toListBox_LB.SelectedItem;
+                CurrencyFrom_TB.Text = currencyFrom;
+                CurrencyTo_TB.Text = currencyTo;
 
                 CurrencyCalculates currencyCalculates = new CurrencyCalculates();
 
-                var finalResoult = currencyCalculates.Calculate(name, rate, time);
+                var finalResoult = currencyCalculates.Calculate(currencyFrom, currencyTo, time);
 
                 if (finalResoult != double.MinValue)
                 {
